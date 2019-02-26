@@ -38,4 +38,3 @@ def login():
         login_user(company,form.remember_me.data)
         redirect(url_for('front.index'))
     return render_template('login.html',form=form)
-

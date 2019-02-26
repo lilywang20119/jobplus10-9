@@ -26,4 +26,5 @@ def create_app(config):
     register_extensions(app)
     register_blueprints(app)
     Migrate(app,db)
+
     return app
