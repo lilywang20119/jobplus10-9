@@ -14,13 +14,14 @@ class Base(db.Model):
 class User(Base,UserMixin):
     __tablename__='user'
     ROLE_USER=10
-    ROLE_COMMPANY=20
+    ROLE_COMPANY=20
     ROLE_ADMIN=30
     id=db.Column(db.Integer,primary_key=True)
     username=db.Column(db.String(32),unique=True,index=True,nullable=False)
     email=db.Column(db.String(64),unique=True,index=True,nullable=False)
-    _password=db.Column('password',db.String(64),nullable=False)
+    _password=db.Column('password',db.String(256),nullable=False)
     role=db.Column(db.SmallInteger,default=ROLE_USER)
+    company_id = db.Column(db.Integer,db.ForeignKey('company.id',ondelete='SET NULL'))
     user_jobs=db.relationship('Job')
     
     def __repr__(self):
@@ -28,11 +29,11 @@ class User(Base,UserMixin):
 
     @property
     def password(self):
-        return_password
+        return self._password
     
     @password.setter
     def password(self,orig_password):
-        self._password=genetate_password_hash(orig_password)
+        self._password=generate_password_hash(orig_password)
 
     def check_password(self,password):
         return check_password_hash(self._password,password)
@@ -59,6 +60,7 @@ class Company(Base):
     details=db.Column(db.String(256))
     tags=db.Column(db.String(64))
     location=db.Column(db.String(32))
+    job_id = db.Column(db.Integer,db.ForeignKey('job.id',ondelete='SET NULL'))
     users=db.relationship('User',uselist=False)
 
     def __repr__(self):
@@ -74,6 +76,7 @@ class Job(Base):
     tags=db.Column(db.String(64))
     experience=db.Column(db.String(64))
     degree=db.Column(db.String(64))
+    user_id = db.Column(db.Integer,db.ForeignKey('user.id',ondelete='SET NULL'))
     companies=db.relationship('Company',uselist=False)
     
     def __repr__(self):
