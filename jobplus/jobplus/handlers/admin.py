@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, request, current_app, redirect, url_for, flash
 from jobplus.decorators import admin_required
 from jobplus.models import User,Job
-from jobplus.forms import User_RegisterForm
+from jobplus.forms import User_RegisterForm, JobForm, UserForm
 
 admin = Blueprint('admin', __name__, url_prefix='/admin')
 
@@ -45,4 +45,39 @@ def edit_user(user_id):
         flash('用户更新成功', 'success')
         return redirect(url_for('admin.users'))
     return render_template('admin/edit_user.html', form=form, user=user)
+
+
+@admin.route('/jobs')
+@admin_required
+def jobs():
+    page = request.args.get('page', default=1, type=int)
+    pagination = Job.query.paginate(
+        page=page,
+        per_page=current_app.config['ADMIN_PER_PAGE'],
+        error_out=False
+    )
+    return render_template('admin/jobs.html', pagination=pagination)
+
+
+@admin.route('/jobs/create', methods=['GET', 'POST'])
+@admin_required
+def create_job():
+    form = JobForm()
+    if form.validate_on_submit():
+        form.create_job()
+        flash('创建成功', 'success')
+        return redirect(url_for('admin.jobs'))
+    return render_template('admin/create_job.html', form=form)
+
+
+@admin.route('/jobs/<int:job_id>/edit', methods=['GET', 'POST'])
+@admin_required
+def edit_job(job_id):
+    job = Job.query.get_or_404(job_id)
+    form = JobForm(obj=job)
+    if form.validate_on_submit():
+        form.update_job(job)
+        flash('更新成功', 'success')
+        return redirect(url_for('admin.jobs'))
+    return render_template('admin/edit_job.html', form=form, job=job)
 
