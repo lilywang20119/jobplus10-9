@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang='zh-CN'>
-</html>
   <head>
     <meta charset="UTF-8">
     <title>{% block title %}{% endblock %}</title>
@@ -38,7 +37,7 @@
           <ul class="dropdown-menu">
             <li><a href="#">个人主页</a></li>
             <li role="separator" class="divider"></li>
-            <li><a href="#">退出登录</a></li>
+            <li><a href="{{ url_for('front.logout') }}">退出登录</a></li>
           </ul>
           {% endif %}
         </li>
@@ -56,3 +55,4 @@
   <script src="http://labfile.oss.aliyuncs.com/courses/923/week7/code/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
   <script src="{{ url_for('static', filename='main.js') }}"></script>
 </body>
+</html>

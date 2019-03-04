@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField,PasswordField,SubmitField,BooleanField
+from wtforms import ValidationError,StringField,PasswordField,SubmitField,BooleanField
 from wtforms.validators import Length,Email,EqualTo,Required,URL
-from jobplus.models import db,User
+from jobplus.models import db,User,Company
 
 class User_RegisterForm(FlaskForm):
     username=StringField('用户名',validators=[Required(),Length(3,24)])
@@ -55,19 +55,10 @@ class LoginForm(FlaskForm):
 
     def validate_email(self,field):
         if field.data and not User.query.filter_by(email=field.data).first():
-
-            raise ValidationError('邮箱未注册')
-        elif filed.data and not Company.query.filter_by(email=field.data).first():
             raise ValidationError('邮箱未注册')
 
     def validate_password(self,field):
         user=User.query.filter_by(email=self.email.data).first()
-        company=Company.query.filter_by(email=self.email.data).first()
+        print(self.password.data)
         if user and not user.check_password(field.data):
             raise ValidationError('密码错误')
-        elif company and not company.check_password(field.data):
-            raise ValidationError('密码错误')
-
-
-    
-
