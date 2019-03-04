@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import ValidationError,StringField,PasswordField,SubmitField,BooleanField
 from wtforms.validators import Length,Email,EqualTo,Required,URL
-from jobplus.models import db,User,Company
+from jobplus.models import db,User,Company,Job
 
 class User_RegisterForm(FlaskForm):
     username=StringField('用户名',validators=[Required(),Length(3,24)])
@@ -21,6 +21,28 @@ class User_RegisterForm(FlaskForm):
         user=User(username=self.username.data,
                 email=self.email.data,
                 password=self.password.data)
+        db.session.add(user)
+        db.session.commit()
+        return user
+   
+    def update_user(self, user):
+        self.populate_obj(user)
+        db.session.add(user)
+        db.session.commit()
+        return user
+
+class UserForm(FlaskForm):
+    email=StringField('邮箱',validators=[Required(),Email()])
+    password=PasswordField('密码',validators=[Required(),Length(6,24)])
+    repeat_password=PasswordField('重复密码',validators=[Required(),EqualTo('password')])
+    submit=SubmitField('提交')
+
+    def validate_email(self,field):
+        if User.query.filter_by(email=field.data).first():
+            raise ValidationError('邮箱已存在')
+
+    def update_user(self, user):
+        self.populate_obj(user)
         db.session.add(user)
         db.session.commit()
         return user
@@ -62,3 +84,26 @@ class LoginForm(FlaskForm):
         print(self.password.data)
         if user and not user.check_password(field.data):
             raise ValidationError('密码错误')
+
+class JobForm(FlaskForm):
+    name=StringField('职位',validators=[Required(),Length(3,24)])
+    tag=StringField('标签',validators=[Required()])
+    submit=SubmitField('提交')
+
+    def validate_name(self,field):
+        if User.query.filter_by(username=field.data).first():
+            raise ValidationError('用户名已存在')
+
+    def create_job(self):
+        job=Job(name=self.name.data,
+                tags=self.tag.data,
+                )
+        db.session.add(job)
+        db.session.commit()
+        return job
+
+    def update_job(self, job):
+        self.populate_obj(job)
+        db.session.add(job)
+        db.session.commit()
+        return job
