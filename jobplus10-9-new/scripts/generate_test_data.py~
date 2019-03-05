@@ -22,7 +22,7 @@ def iter_user():
             role = User.ROLE_COMPANY
         )
 l = list(iter_user())
-
+print(l)
 
 def iter_companydetail():
     for u,d in zip(l,data_company):
@@ -40,7 +40,7 @@ def iter_job():
     for i, u in enumerate(l):
         n = randint(2, 5)
         while n > 0:
-            d = data_job[n]
+            d = data_job[n + i * 5 - 1]
             yield Job(
                 user=u,
                 name=d['name'],
