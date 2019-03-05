@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% from 'macros.html' import render_form %}
+
+{% block title %}
+Company_Register
+{% endblock %}
+
+
+{% block body %}
+  <h2>企业注册</h2>
+  <div class="form">
+
+       {{ render_form(form,url_for('front.company_register')) }}
+  </div>
+{% endblock %}
