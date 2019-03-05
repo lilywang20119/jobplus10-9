@@ -48,7 +48,7 @@ class User(Base,UserMixin):
     is_disable = db.Column(db.Boolean,default=False)
     # 一对一的关系
     resume = db.relationship('Resume',uselist=False,cascade='all,delete-orphan',backref='user')
-    collect_jobs = db.relationship('Job',secondary=user_job)
+    collect_jobs = db.relationship('Job', cascade='all, delete-orphan', backref='user')
     upload_resume_url = db.Column(db.String(64))
 
     #企业用户详情
