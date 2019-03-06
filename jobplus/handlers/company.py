@@ -25,3 +25,9 @@ def profile():
         flash('个人信息更新成功','success')
         return redirect(url_for('front.index'))
     return render_template('company/profile.html',form=form)
+
+
+@company.route('/<int:company_id>/detail')
+def detail(company_id):
+    company = User.query.get_or_404(company_id)
+    return render_template('company/detail.html', company=company)

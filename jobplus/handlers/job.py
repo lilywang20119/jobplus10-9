@@ -15,10 +15,17 @@ def index():
         per_page=current_app.config['INDEX_PER_PAGE'],
         error_out=False
     )
-@job.route('/<int:job_id>')
+    return render_template('job/index.html', pagination=pagination)
+
+@job.route('/<int:job_id>/detail')
 def detail(job_id):
     job = Job.query.get_or_404(job_id)
     return render_template('job/detail.html', job=job)
+
+@job.route('/<int:job_id>/apply')
+def apply(job_id):
+    job = Job.query.get_or_404(job_id)
+    pass
 
 
 

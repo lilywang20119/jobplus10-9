@@ -60,7 +60,7 @@ class User(Base,UserMixin):
         return self.role == self.ROLE_COMPANY
 
     @property
-    def is_staff(self):
+    def is_user(self):
         return self.role == self.ROLE_USER
 
 
@@ -78,6 +78,9 @@ class CompanyDetail(Base):
     def __repr__(self):
         return '<CompanyDetail:{}>'.format(self.about[:9])
 
+    @property
+    def url(self):
+        return url_for('comapny.detail', company_id=self.id)
 
 class Job(Base):
     __tablename__ = 'job'
@@ -97,6 +100,10 @@ class Job(Base):
 
     def __repr__(self):
         return '<Job:{}>'.format(self.name)
+
+    @property
+    def url(self):
+        return url_for('job.detail',job_id = self.id)
 
 
 class Resume(Base):

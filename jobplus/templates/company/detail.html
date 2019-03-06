@@ -1,10 +1,50 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "base.html" %}
+{% from "macros.html" import render_form ,render_job %}
 
-</body>
-</html>
+{% block title %}
+    企业详情
+{% endblock %}
+
+{% block body %}
+<div class="row">
+  <div class="col-md-3">
+      <h2 align="center"><img src="{{ company.companydetail.image_url }}" alt="logo" width="200"></h2>
+      <p align="center">{{ company.companydetail.about }}</p>
+      <br><br>
+  </div>
+  <div class="container">
+      <div class="col-md-8">
+          <h1 align="center"><b>{{ company.name }}</b></h1>
+          <h4 align='center'>
+            <span>类型：{{ company.companydetail.type }}</span>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <span>邮箱：{{ company.email }}</span>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <span>规模：{{ company.companydetail.staff_num }}</span>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <span>融资：{{ company.companydetail.finance }}</span>
+          </h4>
+          <hr>
+          <ul class="nav nav-tabs">
+              <li role="presentation" class="active"><a href="/"><b>在招职位</b></a></li>
+          </ul>
+              <div class="job-list">
+              {% for job in company.jobs %}
+                  <div class="col-sm-6 col-md-4 job">
+                  <div class="thumbnail">
+                  <a href="{{ url_for('job.detail',job_id=job.id) }}" target="_blank">
+                    <div class="caption">
+                     <h4 align="center" class="company_job_name">{{ job.name }}</h4>
+                     <p >{{ job.experience_requirement}} | {{ job.degree_requirement}} | {{ job.salary }} | {{ job.location }}</p>
+
+                    </div>
+                  </a>
+                  </div>
+                  </div>
+              {% endfor %}
+          </div>
+
+      </div>
+  </div>
+</div>
+{% endblock %}

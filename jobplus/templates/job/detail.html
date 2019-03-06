@@ -1,10 +1,63 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "base.html" %}
+{% from "macros.html" import render_form %}
 
-</body>
-</html>
+{% block title %}
+    职位详情
+{% endblock %}
+
+{% block body %}
+
+  <div class="row">
+      <div class="col-md-3">
+          <div align="center">
+              <img src="{{ job.user.companydetail.image_url }}" alt="logo" width="255">
+              <br><br>
+              <a href="{{ url_for('company.detail',company_id=job.user.id) }}">
+                  <button type="button" class="btn btn-danger">公司主页</button>
+              </a>
+              <br><br>
+              {% if current_user.is_authenticated %}
+                {% if not job.current_user_is_applied %}
+                    <a href="{{ url_for('job.apply',job_id=job.id) }}">
+                        <button type="button" class="btn btn-info">投递简历</button>
+                    </a>
+                {% else %}
+                    <a href="/">
+                        <button type="button" class="btn btn-info">已投递</button>
+                    </a>
+                {% endif %}
+              {% endif %}
+
+          </div>
+      </div>
+      <div class="col-md-9">
+          <h1 align="center" color="deeppink">{{ job.user.name }}</h1>
+          <h4 align="center">
+              <span>领域：{{ job.user.companydetail.type }}</span>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <span>邮箱：{{ job.user.email }}</span>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <span>规模：{{ job.user.companydetail.staff_num }}</span>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <span>融资：{{ job.user.companydetail.finance }}</span>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          </h4>
+          <br>
+          <h3 align="center">公司简介</h3>
+          <h4><p align="center">{{ job.user.companydetail.about }}</p></h4>
+          <h3 align="center">职位详情</h3>
+              <div class="media" align="center">
+                  <h4>职位名称：{{ job.name }}</h4>
+                  <p>工资：{{ job.salary }}</p>
+                  <p>所在城市：{{ job.location }}</p>
+                  <p>标签：{{ job.tags }}</p>
+                  <p>经验要求：{{ job.experience_requirement }}</p>
+                  <p>学历要求：{{ job.degree_requirement }}</p>
+                  <p>是否全职：{% if job.is_fulltime %}是{% else %}否{% endif %}</p>
+                  <p>发布时间：{{ job.release_time }}</p>
+              </div>
+      </div>
+
+  </div>
+
+{% endblock %}
