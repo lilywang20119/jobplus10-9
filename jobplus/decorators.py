@@ -4,7 +4,7 @@ from functools import wraps
 from jobplus.models import User
 
 def role_required(role):
-    
+
     def decorator(func):
         @wraps(func)
         def wrapper(*args,**kwargs):

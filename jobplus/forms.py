@@ -94,15 +94,6 @@ class UserProfileForm(FlaskForm):
         user.email = self.email.data
         if self.password.data:
             user.password = self.password.data
-            '''
-        if not user.is_company:
-            company = user.company
-        else:
-            company = CompanyDetail()
-            company.user_id = user.id
-            self.populate_obj(company)
-            db.session.add(company)
-            '''
         db.session.add(user)
         db.session.commit()
 
@@ -140,14 +131,14 @@ class UserEditForm(FlaskForm):
     password = PasswordField('密码（不填写保持不变）')
     phone = StringField('手机号', validators=[DataRequired('请输入手机号码'),
                                            Regexp("1[3578]\d{9}", message="手机格式不正确")])
-                                           submit = SubmitField('提交')
-                                           
-                                           def update_user(self,user):
-                                               self.populate_obj(user)
-                                               if self.password.data:
-                                                   user.password = self.password.data
-                                                       db.session.add(user)
-                                                       db.session.commit()
+    submit = SubmitField('提交')
+
+    def update_user(self,user):
+        self.populate_obj(user)
+        if self.password.data:
+            user.password = self.password.data
+        db.session.add(user)
+        db.session.commit()
 
 class CompanyEditForm(FlaskForm):
     name = StringField('企业名称')
@@ -157,8 +148,8 @@ class CompanyEditForm(FlaskForm):
     description = StringField('一句话描述', validators=[Length(0, 100)])
     about = TextAreaField('公司详情', validators=[Length(0, 1024)])
     submit = SubmitField('提交')
-    
-    
+
+
     def update_company(self,company):
         company.name = self.name.data
         company.email = self.email.data

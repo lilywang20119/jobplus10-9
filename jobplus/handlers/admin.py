@@ -1,5 +1,5 @@
 from flask import (Blueprint, render_template, request, current_app,
-                   redirect, url_for, flash)
+     redirect, url_for, flash)
 from jobplus.models import User, db, Job
 from jobplus.decorators import admin_required
 from jobplus.forms import RegisterForm,UserEditForm,CompanyEditForm
@@ -17,10 +17,10 @@ def index():
 def users():
     page = request.args.get('page',default=1,type=int)
     pagination = User.query.paginate(
-                                     page=page,
-                                     per_page=current_app.config['ADMIN_PER_PAGE'],
-                                     error_out=False
-                                     )
+        page=page,
+        per_page=current_app.config['ADMIN_PER_PAGE'],
+        error_out=False
+    )
     return render_template('admin/users.html',pagination=pagination)
 
 @admin.route('/users/add_user',methods=['POST','GET'])
@@ -31,7 +31,7 @@ def add_user():
         form.create_user()
         flash('求职者增加成功','success')
         return redirect(url_for('admin.users'))
-    
+
     return render_template('admin/add_user.html',form=form)
 
 @admin.route('/users/add_company',methods=['POST','GET'])
@@ -43,7 +43,7 @@ def add_company():
         form.create_user()
         flash('企业增加成功','success')
         return redirect(url_for('admin.users'))
-    
+
     return render_template('admin/add_company.html',form=form)
 
 @admin.route('/users/<int:user_id>/edit', methods=['GET', 'POST'])
@@ -81,8 +81,8 @@ def disable_user(user_id):
 def jobs():
     page = request.args.get('page',default=1,type=int)
     pagination = User.query.paginate(
-                                     page=page,
-                                     per_page=current_app.config['ADMIN_PER_PAGE'],
-                                     error_out=False
-                                     )
+        page=page,
+        per_page=current_app.config['ADMIN_PER_PAGE'],
+        error_out=False
+    )
     return render_template('admin/jobs.html',pagination=pagination)

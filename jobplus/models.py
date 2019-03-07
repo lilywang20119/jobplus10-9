@@ -101,9 +101,11 @@ class Job(Base):
     def __repr__(self):
         return '<Job:{}>'.format(self.name)
 
+
     @property
-    def url(self):
-        return url_for('job.detail',job_id = self.id)
+    def current_user_is_applied(self):
+        d = Delivery.query.filter_by(job_id=self.id,user_id=current_user.id).first()
+        return d is not None
 
 
 class Resume(Base):

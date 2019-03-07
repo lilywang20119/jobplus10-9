@@ -10,14 +10,21 @@ body {
 a,
 a:hover,
 a:visited {
+    cursor: pointer;
     text-decoration: none !important;
 }
+
+tr:active {
+    color: #99ff99;
+}
+
 .job-list,
 .company-list {
     margin-top: 15px;
 }
 
 .job-box {
+
     padding: 13px;
     border: solid 1px #ddd;
     border-radius: 5px;
@@ -29,6 +36,10 @@ a:visited {
 }
 
 .company-item {
+    text-align: center;
+}
+
+.job-item {
     text-align: center;
 }
 
@@ -61,6 +72,8 @@ a:visited {
     overflow: hidden;
     white-space: nowrap
 }
+
+
 
 .company img {
     height: 150px !important;

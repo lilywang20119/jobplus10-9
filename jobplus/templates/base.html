@@ -40,7 +40,7 @@
         {% if current_user.is_user %}
 		  <li><a href="{{ url_for('user.profile',user_id=current_user.id) }}">个人主页</a></li>
         {% elif current_user.is_company %}
-          <li><a href="{{ url_for('company.profile',user_id=current_user.id) }}">个人主页</a></li>
+          <li><a href="{{ url_for('company.profile',user_id=current_user.id) }}">公司主页</a></li>
         {% else %}
           <li><a href="{{ url_for('admin.index')}}">控制台</a></li>
         {% endif %}
