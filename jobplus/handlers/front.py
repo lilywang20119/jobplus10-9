@@ -8,8 +8,9 @@ front = Blueprint('front', __name__)
 
 @front.route('/')
 def index():
-
-    return render_template('index.html')
+    jobs = [Job.query.all()[i] for i in [27,3,6,8,13,17]]
+    companies = [User.query.all()[i] for i in [1,2,3,4,5,9]]
+    return render_template('index.html',jobs=jobs,companies=companies)
 
 @front.route('/login', methods=['GET', 'POST'])
 def login():

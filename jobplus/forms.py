@@ -133,3 +133,45 @@ class CompanyProfileForm(FlaskForm):
         db.session.add(user)
         db.session.add(company)
         db.session.commit()
+
+class UserEditForm(FlaskForm):
+    name = StringField('姓名', validators=[DataRequired(), Length(3, 24)])
+    email = StringField('邮箱', validators=[DataRequired(), Email()])
+    password = PasswordField('密码（不填写保持不变）')
+    phone = StringField('手机号', validators=[DataRequired('请输入手机号码'),
+                                           Regexp("1[3578]\d{9}", message="手机格式不正确")])
+                                           submit = SubmitField('提交')
+                                           
+                                           def update_user(self,user):
+                                               self.populate_obj(user)
+                                               if self.password.data:
+                                                   user.password = self.password.data
+                                                       db.session.add(user)
+                                                       db.session.commit()
+
+class CompanyEditForm(FlaskForm):
+    name = StringField('企业名称')
+    email = StringField('邮箱', validators=[DataRequired(), Email()])
+    password = PasswordField('密码')
+    site = StringField('公司网站', validators=[Length(0, 64)])
+    description = StringField('一句话描述', validators=[Length(0, 100)])
+    about = TextAreaField('公司详情', validators=[Length(0, 1024)])
+    submit = SubmitField('提交')
+    
+    
+    def update_company(self,company):
+        company.name = self.name.data
+        company.email = self.email.data
+        if self.password.data:
+            company.password = self.password.data
+        if company.companydetail:
+            companydetail = company.companydetail
+        else:
+            companydetail = CompanyDetail()
+            companydetail.user_id = company.id
+        companydetail.site = self.site.data
+        companydetail.description = self.description.data
+        self.populate_obj(companydetail)
+        db.session.add(companydetail)
+        db.session.add(company)
+        db.session.commit()
