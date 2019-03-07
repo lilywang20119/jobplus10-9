@@ -44,7 +44,7 @@ def logout():
     flash('您已退出登录', 'success')
     return redirect(url_for('.index'))
 
-@front.route('/user_register', methods=['GET', 'POST'])
+@front.route('/userregister', methods=['GET', 'POST'])
 def user_register():
     form = RegisterForm()
     if form.validate_on_submit():
@@ -53,7 +53,7 @@ def user_register():
         return redirect(url_for('.login'))
     return render_template('user_register.html', form=form)
 
-@front.route('/company_register', methods=['GET', 'POST'])
+@front.route('/companyregister', methods=['GET', 'POST'])
 def company_register():
     form = RegisterForm()
     form.name.label = u'企业名称'
