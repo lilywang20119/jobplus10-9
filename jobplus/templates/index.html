@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% from 'macros.html' import render_form %}
+{% from 'macros.html' import render_job,render_company %}
 
 {% block head %}
 <div class="jumbotron masthead">
@@ -16,22 +16,10 @@
     <li class="newTab active"><a href="/">热门职位</a></li>
 </ul>
 
-<div class="row">
+<div class="job-list">
    {% for job in jobs %}
-    <div class="col-sm-6 col-md-4 job">
-        <div class="thumbnail">
-          <a href="{{ url_for('job.detail',job_id=job.id) }}" target="_blank">
-             <div class="caption">
-                <h4 align="center" class="job_name">{{ job.name }}</h4>
-                <p >{{ job.experience_requirement}} | {{ job.degree_requirement}} | {{ job.salary }} | {{ job.location }}</p>
-
-
-             </div>
-          </a>
-        </div>
-    </div>
-
-    {% endfor %}
+        {{ render_job(job)}}
+   {% endfor %}
 </div>
 
 
@@ -45,21 +33,9 @@
     <li class="newTab active"><a href="/">热门公司</a></li>
 </ul>
 
-<div class="row">
+<div class="company-list">
    {% for company in companies %}
-    <div class="col-sm-6 col-md-4 company">
-        <div class="thumbnail">
-          <a href="{{ url_for('company.detail',company_id=company.id) }}" target="_blank">
-             <img src="{{ company.companydetail.image_url }}" alt="公司logo" class="img-circle">
-             <div class="caption">
-                <h4 align="center" class="company_name">{{ company.name }}</h4>
-                <p align="center" class="company_description">{{ company.companydetail.about }}</p>
-                <p align="center">{{ company.jobs | length}}</p>
-
-             </div>
-          </a>
-        </div>
-    </div>
+      {{ render_company(company) }}
 
     {% endfor %}
 </div>
