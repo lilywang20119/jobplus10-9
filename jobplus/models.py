@@ -67,8 +67,7 @@ class User(Base,UserMixin):
 class CompanyDetail(Base):
     __tablename__ = 'companydetail'
 
-    id = db.Column(db.Integer,db.ForeignKey('user.id',ondelete='CASCADE'),
-         primary_key=True)
+    id = db.Column(db.Integer,db.ForeignKey('user.id', ondelete='CASCADE'),primary_key=True)
     image_url = db.Column(db.String(256))
     finance = db.Column(db.String(64))
     staff_num = db.Column(db.String(64))
@@ -96,7 +95,7 @@ class Job(Base):
     release_time = db.Column(db.String(64))
     is_open = db.Column(db.Boolean,default=True)
     is_disable = db.Column(db.Boolean,default=False)
-    user_id = db.Column(db.Integer,db.ForeignKey('user.id', ondelete='CASCADE'))
+    company_id = db.Column(db.Integer,db.ForeignKey('user.id', ondelete='CASCADE'))
 
     def __repr__(self):
         return '<Job:{}>'.format(self.name)
@@ -136,6 +135,15 @@ class Delivery(Base):
     id = db.Column(db.Integer,primary_key=True)
     job_id = db.Column(db.Integer,db.ForeignKey('job.id',ondelete='SET NULL'))
     user_id = db.Column(db.Integer,db.ForeignKey('user.id',ondelete='SET NULL'))
+    company_id = db.Column(db.Integer)
     status = db.Column(db.SmallInteger,default=STATUS_WAITING)
     #企业回应
     response = db.Column(db.String(256))
+
+    @property
+    def user(self):
+        return User.query.filter_by(self.user_id)
+
+    @property
+    def job(self):
+        return Job.query.filter_by(self.job_id)

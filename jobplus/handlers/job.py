@@ -1,5 +1,5 @@
 from flask import Blueprint,render_template,redirect,url_for,request,current_app
-from flask import render_template,flash
+from flask import render_template,flash,abort
 from jobplus.models import Job,Delivery,db
 
 from flask_login import login_required,current_user
@@ -40,5 +40,22 @@ def apply(job_id):
         flash('投递成功啦','sucess')
     return redirect(url_for('job.detail',job_id=job_id))
 
+@job.route('/<int:job_id>/status')
+@login_required
+def status(job_id):
+    job = Job.query.get_or_404(job_id)
+    if not current_user.is_admin and not current_user.is_company:
+        abort(404)
+
+    if job.is_disable:
+        job.is_disable=False
+        flash('职位上线成功','sucess')
+    else:
+        job.is_disable=True
+        flash('职位下线成功','info')
+    db.session.add(job)
+    db.session.commit()
+
+    return redirect(url_for('admin.jobs'))
 
 

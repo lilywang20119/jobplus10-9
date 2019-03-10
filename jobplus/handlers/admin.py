@@ -80,7 +80,7 @@ def disable_user(user_id):
 @admin_required
 def jobs():
     page = request.args.get('page',default=1,type=int)
-    pagination = User.query.paginate(
+    pagination = Job.query.paginate(
         page=page,
         per_page=current_app.config['ADMIN_PER_PAGE'],
         error_out=False

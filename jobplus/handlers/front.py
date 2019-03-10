@@ -8,7 +8,7 @@ front = Blueprint('front', __name__)
 
 @front.route('/')
 def index():
-    jobs = [Job.query.all()[i] for i in [27,3,6,8,13,17]]
+    jobs = [Job.query.all()[i] for i in [3,10,6,21,13,18]]
     companies = [User.query.all()[i] for i in [1,2,3,4,5,9]]
     return render_template('index.html',jobs=jobs,companies=companies)
 
