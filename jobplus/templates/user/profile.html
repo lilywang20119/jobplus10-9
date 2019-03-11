@@ -1,15 +1,60 @@
-{% extends "base.html" %}
-{% from "macros.html" import render_form %}
+{% extends 'base.html' %}
+{% from 'macros.html' import render_form %}
 
-{% block title %}
-UserProfile
-{% endblock %}
-
+{% block title %}我的主页{% endblock %}
 
 {% block body %}
-  <h2>编辑个人信息</h2>
-  <div class="form">
-
-       {{ render_form(form,url_for('user.profile')) }}
+  <div class='row'>
+    <div class='col-md-3'>
+      <div align='center'>
+      <h1>{{ current_user.name }}</h1>
+      <h4>{{ current_user.email }}<h4>
+      <br><br>
+      <a href='{{ url_for("company.index") }}'>
+        <button type="button" class="btn btn-danger">热门企业</button>
+      </a>
+      <br><br>
+      <a href='{{ url_for("job.index") }}'>
+        <button type="button" class="btn btn-info">最新职位</button>
+      </a>
+      <br><br>
+      <a href="{{ url_for('user.edit_resume', user_id=current_user.id) }}">
+        <button type="button" class="btn btn-success">编辑简历</button>
+      </a>
+      <br><br>
+      </div>
+    </div>
+    <div class='col-md-9'>
+      <br><h3 align='center'><font color='green'><b>这就是简历</b></font></h3><br>
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>姓名</th>
+            <th>年龄</th>
+            <th>工龄</th>
+            <th>家乡城市</th>
+          </tr>
+          <tbody>
+            <tr>
+              <td>{% if current_user.resume %}{{ current_user.resume.name }}{% else %}暂无{% endif %}</td>
+              <td>{{ current_user.resume.age }}</td>
+              <td>{{ current_user.resume.work_age }}</td>
+              <td>{{ current_user.resume.home_city }}</td>
+            </tr>
+          </tbody>
+        </thead>
+      </table>
+      <br><h4><b>教育经历<b></h4>
+      <h5>{{ current_user.resume.edu_experience }}</h5>
+      <br><h4><b>工作经历<b></h4>
+      <h5>{{ current_user.resume.job_experience }}</h5>
+      <br><h4><b>项目经历<b></h4>
+      <h5>{{ current_user.resume.pro_experience }}</h5>
+      <br><br><br><br>
+      {% if current_user.resume %}
+        <h2><center><a href="{{ current_user.resume.resume_url }}" target='_blank'>点此下载简历文件</a></center></h2>
+        <h5 align='right'><font color='7744ff'>更新时间：{{ current_user.resume.update_at }}</font></h5><br>
+      {% endif %}
+    </div>
   </div>
 {% endblock %}

@@ -23,13 +23,9 @@
                     </a>
                 {% else %}
                     <a href="/">
-                        <button type="button" class="btn btn-info">已投递</button>
+                        <button type="button" class="btn btn-info" disabled="disabled">已投递</button>
                     </a>
                 {% endif %}
-              {% else %}
-                  <a href="{{ url_for('front.login') }}">
-                      <button type="button" class="btn btn-info">投递简历</button>
-                  </a>
               {% endif %}
 
           </div>

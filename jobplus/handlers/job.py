@@ -28,12 +28,14 @@ def detail(job_id):
 @login_required
 def apply(job_id):
     job = Job.query.get_or_404(job_id)
+
     if job.current_user_is_applied:
         flash('已经投递过该职位','warning')
     else:
         d = Delivery(
             job_id=job_id,
-            user_id=current_user.id
+            user_id=current_user.id,
+            company_id=job.company_id
         )
         db.session.add(d)
         db.session.commit()

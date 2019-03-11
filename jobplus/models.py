@@ -142,8 +142,12 @@ class Delivery(Base):
 
     @property
     def user(self):
-        return User.query.filter_by(self.user_id)
+        return User.query.get(self.user_id)
 
     @property
     def job(self):
-        return Job.query.filter_by(self.job_id)
+        return Job.query.get(self.job_id)
+
+    @property
+    def company(self):
+        return CompanyDetail.query.get(self.company_id)

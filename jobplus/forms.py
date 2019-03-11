@@ -67,7 +67,7 @@ class ResumeForm(FlaskForm):
     submit = SubmitField('提交')
 
     def upload_resume(self):
-        f = self.resume.metadata
+        f = self.resume.data
         filename = self.name.data + '.pdf'
         f.save(os.path.join(os.getcwd(),'jobplus/static/resumes',filename))
         return url_for('static',filename=os.path.join('resumes',filename))
@@ -86,7 +86,7 @@ class UserProfileForm(FlaskForm):
     phone = StringField('手机号',validators=[DataRequired('请输入手机号码'),
             Regexp("1[3578]\d{9}",message="手机格式不正确")])
     work_years = IntegerField('工作年限')
-    resume_url = FileField('上传简历',validators=[FileAllowed(['pdf','txt','py','zip'])])
+    resume = FileField('上传简历',validators=[FileAllowed(['pdf','txt','py','zip'])])
     submit = SubmitField('提交')
 
     def update_profile(self,user):
@@ -94,15 +94,17 @@ class UserProfileForm(FlaskForm):
         user.email = self.email.data
         if self.password.data:
             user.password = self.password.data
+        filename = self.upload_resume()
+        user.upload_resume_url = url_for('static',filename=os.path.join('resumes',filename))
         db.session.add(user)
         db.session.commit()
 
     def upload_resume(self):
         f = self.resume.data
+        print(f)
         filename = self.name.data + '.pdf'
         f.save(os.path.join(os.getcwd(), 'jobplus/static/resumes', filename))
-        return url_for('static', filename=os.path.join('resumes', filename))
-
+        return filename
 
 class CompanyProfileForm(FlaskForm):
     name = StringField('企业名称')
